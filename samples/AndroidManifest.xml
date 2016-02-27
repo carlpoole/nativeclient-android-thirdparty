@@ -35,6 +35,13 @@
                 <category android:name="com.wuman.oauth.samples.EXAMPLE"/>
             </intent-filter>
         </activity>
+        <activity android:configChanges="screenSize|orientation" android:label="@string/sample_microsoft" android:name=".microsoft.MicrosoftActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="com.wuman.oauth.samples.EXAMPLE"/>
+            </intent-filter>
+        </activity>
         <activity android:configChanges="screenSize|orientation" android:label="@string/sample_github" android:name=".github.GitHubActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
