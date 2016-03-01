@@ -20,8 +20,8 @@ def buildTime() {
 }
 
 android {
-  compileSdkVersion rootProject.ext.compileSdkVersion
-  buildToolsVersion rootProject.ext.buildToolsVersion
+  compileSdkVersion 23
+  buildToolsVersion '23.0.2'
 
   defaultConfig {
     minSdkVersion 9
@@ -53,17 +53,16 @@ android {
   }
 }
 
-apply plugin: "android-unit-test"
+/* apply plugin: "android-unit-test" */
 
 dependencies {
-    compile project(':library')
-    compile('de.keyboardsurfer.android.widget:crouton:1.8.1') {
-        exclude group: 'com.google.android', module: 'support-v4'
-    }
-    compile 'com.squareup.picasso:picasso:2.2.0'
-
-    testCompile 'junit:junit:4.10'
-    testCompile 'org.robolectric:robolectric:2.1.+'
+  compile project(':library')
+  compile('de.keyboardsurfer.android.widget:crouton:1.8.1') {
+    exclude group: 'com.google.android', module: 'support-v4'
+  }
+  compile 'com.squareup.picasso:picasso:2.2.0'
+  testCompile 'junit:junit:4.10'
+  testCompile 'org.robolectric:robolectric:2.1.+'
 }
 
 File signFile = rootProject.file('sign.properties')

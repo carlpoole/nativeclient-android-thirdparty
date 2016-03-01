@@ -14,8 +14,6 @@ public class MicrosoftConstants {
 
     public static final String AUTHORIZATION_CODE_SERVER_URL = "https://login.microsoftonline.com/kidventus.com/oauth2/v2.0/authorize";
 
-    public static final String AUTHORIZATION_IMPLICIT_SERVER_URL = "https://foursquare.com/oauth2/authenticate";
-
     public static final String TOKEN_SERVER_URL = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
 
     public static final String REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob";

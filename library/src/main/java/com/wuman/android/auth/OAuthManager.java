@@ -197,6 +197,8 @@ public class OAuthManager {
 
                     String redirectUri = mUIController.getRedirectUri();
 
+
+
                     AuthorizationCodeRequestUrl authorizationUrl = mFlow
                             .newExplicitAuthorizationUrl()
                             .setRedirectUri(redirectUri);

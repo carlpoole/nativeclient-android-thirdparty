@@ -223,7 +223,7 @@ class OAuthDialogFragment extends DialogFragmentCompat {
             return false;
         }
         if (rOpaque) {
-            return TextUtils.equals(uri, redirectUri);
+            return uri.indexOf(redirectUri) == 0 || TextUtils.equals(uri, redirectUri);
         }
         if (!TextUtils.equals(r.getScheme(), u.getScheme())) {
             return false;
@@ -332,7 +332,7 @@ class OAuthDialogFragment extends DialogFragmentCompat {
 
             @Override
             public void onReceivedError(WebView view, int errorCode, String description,
-                    String failingUrl) {
+                                        String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);
                 onError(description);
             }
@@ -349,6 +349,10 @@ class OAuthDialogFragment extends DialogFragmentCompat {
                     return false;
                 }
 
+                if (url.contains("urn:ietf:wg:oauth:2.0:oob")) {
+                    loadUrl = false;
+                }
+
                 String authorizationType = getArguments().getString(ARG_AUTHORIZATION_TYPE);
                 LOGGER.info("url: " + url + ", redirect: " + redirectUri + ", callback: "
                         + isRedirectUriFound(url, redirectUri));
@@ -358,14 +362,22 @@ class OAuthDialogFragment extends DialogFragmentCompat {
                         mController.set(responseUrl.getVerifier(), responseUrl.getError(), null,
                                 true);
                     } else if (TextUtils.equals(authorizationType, AUTHORIZATION_EXPLICIT)) {
-                        AuthorizationCodeResponseUrl responseUrl =
-                                new AuthorizationCodeResponseUrl(url);
-                        String error = responseUrl.getError();
-                        if (!TextUtils.isEmpty(error)
-                                && !TextUtils.isEmpty(responseUrl.getErrorDescription())) {
-                            error += (": " + responseUrl.getErrorDescription());
+                        AuthorizationCodeResponseUrl responseUrl;
+
+                        if (url.indexOf(redirectUri) == 0) {
+                            //Todo: fix here Carl
+                            mController.set(code, error, null, true);
+                        } else {
+                            responseUrl = new AuthorizationCodeResponseUrl(url);
+                            String error = responseUrl.getError();
+                            if (!TextUtils.isEmpty(error)
+                                    && !TextUtils.isEmpty(responseUrl.getErrorDescription())) {
+                                error += (": " + responseUrl.getErrorDescription());
+                            }
+                            mController.set(responseUrl.getCode(), error, null, true);
                         }
-                        mController.set(responseUrl.getCode(), error, null, true);
+
+
                     } else { // implicit
                         ImplicitResponseUrl implicitResponseUrl = new ImplicitResponseUrl(url);
                         String error = implicitResponseUrl.getError();
@@ -379,8 +391,10 @@ class OAuthDialogFragment extends DialogFragmentCompat {
                     return true;
                 }
                 if (loadUrl) {
+
                     view.loadUrl(url);
                 }
+
                 return false;
             }
 
@@ -402,7 +416,7 @@ class OAuthDialogFragment extends DialogFragmentCompat {
                 .getIdentifier("android:id/titleDivider", null, null));
             if (divider != null) {
                 divider.setBackgroundColor(getDialog().getContext().getResources().getColor(
-                    android.R.color.background_dark));
+                        android.R.color.background_dark));
             }
         }
     }
