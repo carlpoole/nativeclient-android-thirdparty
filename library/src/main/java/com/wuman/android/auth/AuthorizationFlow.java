@@ -226,6 +226,7 @@ public class AuthorizationFlow extends AuthorizationCodeFlow {
                         new HttpRequestInitializer() {
                             @Override
                             public void initialize(HttpRequest request) throws IOException {
+                                // Todo: getRequestInitializer returns null causing error
                                 getRequestInitializer().initialize(request);
                                 request.getHeaders().setAccept("application/json");
                             }
@@ -310,7 +311,7 @@ public class AuthorizationFlow extends AuthorizationCodeFlow {
      * Creates a new credential for the given user ID based on the given token
      * response and store in the credential store.
      * 
-     * @param response implicit authorization token response
+     * @param implicitResponse implicit authorization token response
      * @param userId user ID or {@code null} if not using a persisted credential
      *            store
      * @return newly created credential

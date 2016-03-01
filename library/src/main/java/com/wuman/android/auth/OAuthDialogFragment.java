@@ -393,7 +393,6 @@ class OAuthDialogFragment extends DialogFragmentCompat {
                     return true;
                 }
                 if (loadUrl) {
-
                     view.loadUrl(url);
                 }
 
