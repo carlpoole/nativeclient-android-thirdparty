@@ -364,9 +364,12 @@ class OAuthDialogFragment extends DialogFragmentCompat {
                     } else if (TextUtils.equals(authorizationType, AUTHORIZATION_EXPLICIT)) {
                         AuthorizationCodeResponseUrl responseUrl;
 
+                        // If the beginning of the url is urn:ietf:wg:oauth:2.0:oob
                         if (url.indexOf(redirectUri) == 0) {
-                            //Todo: fix here Carl
-                            mController.set(code, error, null, true);
+                            // Code will be everything after ?code=  And before &session_state
+                            String code = url.substring(redirectUri.length()+6, url.indexOf("&session_state"));
+                            LOGGER.info("code: "+code);
+                            mController.set(code, null, null, true);
                         } else {
                             responseUrl = new AuthorizationCodeResponseUrl(url);
                             String error = responseUrl.getError();
@@ -376,7 +379,6 @@ class OAuthDialogFragment extends DialogFragmentCompat {
                             }
                             mController.set(responseUrl.getCode(), error, null, true);
                         }
-
 
                     } else { // implicit
                         ImplicitResponseUrl implicitResponseUrl = new ImplicitResponseUrl(url);
